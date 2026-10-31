@@ -3,5 +3,9 @@ compatibility_date = "2026-10-31"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "public"
 
-# Bindings (D1 'DB', R2 'PHOTOS') are configured directly in Cloudflare Dashboard:
-# Workers & Pages -> ecomtemplatecloudflare -> Settings -> Bindings
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "ecom_boutique_db"
+database_id = "c311e0b5-8b4f-43f7-a42d-ac2719fc2482"
+
