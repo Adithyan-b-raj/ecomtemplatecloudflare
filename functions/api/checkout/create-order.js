@@ -36,43 +36,46 @@ export async function onRequestPost(context) {
         }
 
         // 2. Server-Authoritative Price Calculation & Live Stock Check
+        // BMAD Optimization: Consolidated JOIN query retrieves product and variant stock in 1 single row read
         let calculatedTotal = 0;
         const verifiedItems = [];
 
         for (const item of items) {
-            const product = await db.prepare(
-                `SELECT id, title, price, is_in_store_only FROM products WHERE id = ?`
-            ).bind(item.id).first();
+            const row = await db.prepare(
+                `SELECT p.id, p.title, p.price, p.is_in_store_only, v.id AS variant_id, v.stock_qty
+                 FROM products p
+                 LEFT JOIN product_variants v ON p.id = v.product_id AND v.size = ?
+                 WHERE p.id = ?`
+            ).bind(item.size, item.id).first();
 
-            if (!product) {
+            if (!row) {
                 return new Response(JSON.stringify({ error: `Product ID #${item.id} not found` }), { status: 404 });
             }
 
-            if (product.is_in_store_only) {
-                return new Response(JSON.stringify({ error: `"${product.title}" is in-store only and cannot be ordered online.` }), { status: 400 });
+            if (row.is_in_store_only) {
+                return new Response(JSON.stringify({ error: `"${row.title}" is in-store only and cannot be ordered online.` }), { status: 400 });
             }
 
-            // Verify variant stock availability
-            const variant = await db.prepare(
-                `SELECT id, stock_qty FROM product_variants WHERE product_id = ? AND size = ?`
-            ).bind(item.id, item.size).first();
+            if (!row.variant_id) {
+                return new Response(JSON.stringify({ error: `Size ${item.size} is not available for "${row.title}"` }), { status: 400 });
+            }
 
             const requestedQty = parseInt(item.qty, 10) || 1;
 
-            if (!variant || variant.stock_qty < requestedQty) {
+            if (row.stock_qty < requestedQty) {
                 return new Response(JSON.stringify({ 
-                    error: `"${product.title}" in size ${item.size} is out of stock.` 
+                    error: `"${row.title}" in size ${item.size} is out of stock.` 
                 }), { status: 409 });
             }
 
-            const itemSubtotal = product.price * requestedQty;
+            const itemSubtotal = row.price * requestedQty;
             calculatedTotal += itemSubtotal;
 
             verifiedItems.push({
-                product_id: product.id,
-                title: product.title,
+                product_id: row.id,
+                title: row.title,
                 size: item.size,
-                price: product.price,
+                price: row.price,
                 qty: requestedQty
             });
         }
@@ -98,12 +101,15 @@ export async function onRequestPost(context) {
 
         const orderId = orderInsert.meta.last_row_id;
 
-        // 4. Record verified line items
-        for (const item of verifiedItems) {
-            await db.prepare(
-                `INSERT INTO order_items (order_id, product_id, product_title, size, unit_price, quantity)
-                 VALUES (?, ?, ?, ?, ?, ?)`
-            ).bind(orderId, item.product_id, item.title, item.size, item.price, item.qty).run();
+        // 4. BMAD Batch Insertion: Record all line items in 1 atomic roundtrip
+        if (verifiedItems.length > 0) {
+            const itemBatch = verifiedItems.map(item =>
+                db.prepare(
+                    `INSERT INTO order_items (order_id, product_id, product_title, size, unit_price, quantity)
+                     VALUES (?, ?, ?, ?, ?, ?)`
+                ).bind(orderId, item.product_id, item.title, item.size, item.price, item.qty)
+            );
+            await db.batch(itemBatch);
         }
 
         // 5. Generate Cashfree Payment Session (if credentials present)

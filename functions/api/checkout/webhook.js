@@ -89,23 +89,29 @@ export async function onRequestPost(context) {
                 return new Response(JSON.stringify({ message: "Order already processed" }), { status: 200 });
             }
 
-            // 1. Mark order as PROCESSING in D1
-            await db.prepare(
-                `UPDATE orders SET payment_status = 'PROCESSING' WHERE order_number = ?`
-            ).bind(orderNumber).run();
-
-            // 2. Fetch order items to atomically decrement stock
+            // 1. Fetch order items to atomically decrement stock
             const { results: items } = await db.prepare(
                 `SELECT product_id, size, quantity FROM order_items WHERE order_id = ?`
             ).bind(currentOrder.id).all();
 
-            for (const item of items) {
-                await db.prepare(
-                    `UPDATE product_variants 
-                     SET stock_qty = MAX(0, stock_qty - ?) 
-                     WHERE product_id = ? AND size = ?`
-                ).bind(item.quantity, item.product_id, item.size).run();
+            // 2. BMAD Atomic Write Batch:
+            // Single transaction updates order status AND decrements variant stocks.
+            // Eliminates multi-roundtrip write latency and prevents partial state desync.
+            const batchStatements = [
+                db.prepare(`UPDATE orders SET payment_status = 'PROCESSING' WHERE order_number = ?`).bind(orderNumber)
+            ];
+
+            for (const item of (items || [])) {
+                batchStatements.push(
+                    db.prepare(
+                        `UPDATE product_variants 
+                         SET stock_qty = MAX(0, stock_qty - ?) 
+                         WHERE product_id = ? AND size = ?`
+                    ).bind(item.quantity, item.product_id, item.size)
+                );
             }
+
+            await db.batch(batchStatements);
 
             // 3. Trigger WhatsApp notification webhook if configured
             const waWebhook = await db.prepare(

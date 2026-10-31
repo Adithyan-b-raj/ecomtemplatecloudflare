@@ -29,16 +29,30 @@ export async function onRequestGet(context) {
     }
 
     try {
+        // 1. Fetch latest 50 orders (scoped pagination)
         const { results: orders } = await db.prepare(
             `SELECT * FROM orders ORDER BY id DESC LIMIT 50`
         ).all();
 
+        if (!orders || orders.length === 0) {
+            return new Response(JSON.stringify([]), {
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cache-Control": "no-store"
+                }
+            });
+        }
+
+        // 2. Optimized Scoped Query: ONLY read items belonging to these 50 orders
+        // Prevents unbounded full-table scan of historical order_items
+        const orderIds = orders.map(o => o.id);
+        const placeholders = orderIds.map(() => '?').join(',');
         const { results: items } = await db.prepare(
-            `SELECT * FROM order_items`
-        ).all();
+            `SELECT * FROM order_items WHERE order_id IN (${placeholders})`
+        ).bind(...orderIds).all();
 
         const itemsMap = {};
-        for (const item of items) {
+        for (const item of (items || [])) {
             if (!itemsMap[item.order_id]) itemsMap[item.order_id] = [];
             itemsMap[item.order_id].push(item);
         }
@@ -49,7 +63,10 @@ export async function onRequestGet(context) {
         }));
 
         return new Response(JSON.stringify(formatted), {
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store" // Admin always gets fresh data
+            }
         });
     } catch (err) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });

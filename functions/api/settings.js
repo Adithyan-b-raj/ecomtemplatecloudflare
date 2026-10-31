@@ -14,26 +14,45 @@ function isAuthorized(request, env) {
 }
 
 export async function onRequestGet(context) {
-    const { env } = context;
+    const { request, env } = context;
     const db = env.DB;
 
+    const fallbackSettings = {
+        announcement_text: "All India Free Shipping | 4 to 6 Days Delivery | Handcrafted in Kerala",
+        free_shipping_threshold: 999,
+        stock_urgency_limit: 5,
+        support_whatsapp_number: "919876543210"
+    };
+
     if (!db) {
-        return new Response(JSON.stringify({
-            announcement_text: "All India Free Shipping | 4 to 6 Days Delivery | Handcrafted in Kerala",
-            free_shipping_threshold: 999,
-            stock_urgency_limit: 5,
-            support_whatsapp_number: "919876543210"
-        }), { headers: { "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(fallbackSettings), { 
+            headers: { 
+                "Content-Type": "application/json",
+                "Cache-Control": "public, max-age=60, s-maxage=300"
+            } 
+        });
     }
 
     try {
+        const url = new URL(request.url);
+        const isFresh = url.searchParams.get("fresh") === "true" || isAuthorized(request, env);
+
         const { results } = await db.prepare(`SELECT key, value FROM settings`).all();
-        const map = {};
-        for (const r of results) {
+        const map = { ...fallbackSettings };
+        for (const r of (results || [])) {
             map[r.key] = r.value;
         }
+
+        const cacheControl = isFresh
+            ? "no-store, no-cache, must-revalidate"
+            : "public, max-age=60, s-maxage=300, stale-while-revalidate=600";
+
         return new Response(JSON.stringify(map), {
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+                "Cache-Control": cacheControl,
+                "Access-Control-Allow-Origin": "*"
+            }
         });
     } catch (err) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });
