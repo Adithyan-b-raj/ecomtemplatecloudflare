@@ -1,11 +1,28 @@
 /**
- * Cloudflare Pages Function: Photo Upload to Cloudflare R2
+ * Cloudflare Pages Function: Photo Upload to Cloudflare R2 (Secured)
  * Handles POST /api/upload
+ * 
+ * SECURITY: Protected by x-admin-key to prevent arbitrary bucket writes & storage abuse
  */
+
+function isAuthorized(request, env) {
+    if (!env.ADMIN_SECRET_KEY) return true; // Open in local dev if no key set
+    const authHeader = request.headers.get("x-admin-key") || request.headers.get("authorization");
+    if (!authHeader) return false;
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    return token === env.ADMIN_SECRET_KEY;
+}
 
 export async function onRequestPost(context) {
     const { request, env } = context;
     const bucket = env.PHOTOS;
+
+    if (!isAuthorized(request, env)) {
+        return new Response(JSON.stringify({ error: "Unauthorized access: Valid x-admin-key required" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+        });
+    }
 
     try {
         const formData = await request.formData();

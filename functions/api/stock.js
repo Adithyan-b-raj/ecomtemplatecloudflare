@@ -1,7 +1,15 @@
 /**
- * Cloudflare Pages Function: Stock & In-Store POS API
+ * Cloudflare Pages Function: Stock & In-Store POS API (Secured)
  * Handles /api/stock (PATCH variant stock, record POS counter sale)
  */
+
+function isAuthorized(request, env) {
+    if (!env.ADMIN_SECRET_KEY) return true; // Open in local dev if no key set
+    const authHeader = request.headers.get("x-admin-key") || request.headers.get("authorization");
+    if (!authHeader) return false;
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    return token === env.ADMIN_SECRET_KEY;
+}
 
 export async function onRequestPatch(context) {
     const { request, env } = context;
@@ -9,6 +17,13 @@ export async function onRequestPatch(context) {
 
     if (!db) {
         return new Response(JSON.stringify({ error: "D1 database binding missing" }), { status: 500 });
+    }
+
+    if (!isAuthorized(request, env)) {
+        return new Response(JSON.stringify({ error: "Unauthorized access: Valid x-admin-key required" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+        });
     }
 
     try {

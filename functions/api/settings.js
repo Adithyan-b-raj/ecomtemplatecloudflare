@@ -1,7 +1,17 @@
 /**
- * Cloudflare Pages Function: Storefront Settings API
+ * Cloudflare Pages Function: Storefront Settings API (Secured)
  * Handles GET & POST /api/settings
+ * 
+ * SECURITY: POST requires x-admin-key to prevent unauthorized store config modification
  */
+
+function isAuthorized(request, env) {
+    if (!env.ADMIN_SECRET_KEY) return true; // Open in local dev if no key set
+    const authHeader = request.headers.get("x-admin-key") || request.headers.get("authorization");
+    if (!authHeader) return false;
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    return token === env.ADMIN_SECRET_KEY;
+}
 
 export async function onRequestGet(context) {
     const { env } = context;
@@ -36,6 +46,13 @@ export async function onRequestPost(context) {
 
     if (!db) {
         return new Response(JSON.stringify({ error: "D1 database missing" }), { status: 500 });
+    }
+
+    if (!isAuthorized(request, env)) {
+        return new Response(JSON.stringify({ error: "Unauthorized access: Valid x-admin-key required" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+        });
     }
 
     try {

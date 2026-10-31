@@ -95,3 +95,15 @@ flowchart TD
   * Stock Matrix with live stepper saves to `/api/stock`.
   * In-Store POS Register with 1-tap counter sale linked to D1 atomic decrement.
   * Add Product screen uploading photos to R2 and publishing to D1.
+
+---
+
+### 🛡️ Epic 6: BMAD Security Hardening & Anti-Tampering Protection
+* **Story 6.1 — Anti-Fake Order Cryptographic Verification (`functions/api/checkout/webhook.js`)**
+  * HMAC-SHA256 signature verification over `timestamp + rawBody` using Web Crypto API.
+  * Idempotency safeguard prevents duplicate stock deductions from webhook retries.
+* **Story 6.2 — Server-Authoritative Pricing Guard (`functions/api/checkout/create-order.js`)**
+  * Strict database price lookup per item ID; rejects client-altered `total_amount`.
+  * Pre-checkout stock validation prevents phantom orders for sold-out variants.
+* **Story 6.3 — Role-Based API Authorization (`x-admin-key`)**
+  * Protection of `/api/orders`, `/api/stock`, `/api/products` (POST), `/api/settings` (POST), and `/api/upload` (POST) against unauthorized access and customer PII leakage.

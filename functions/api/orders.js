@@ -1,14 +1,31 @@
 /**
- * Cloudflare Pages Function: Orders & Dispatch Management API
- * Handles GET /api/orders & PATCH /api/orders/:id
+ * Cloudflare Pages Function: Orders & Dispatch Management API (Secured)
+ * Handles GET /api/orders & PATCH /api/orders
+ * 
+ * SECURITY: Protected by x-admin-key to prevent public leakage of customer PII
  */
 
+function isAuthorized(request, env) {
+    if (!env.ADMIN_SECRET_KEY) return true;
+    const authHeader = request.headers.get("x-admin-key") || request.headers.get("authorization");
+    if (!authHeader) return false;
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    return token === env.ADMIN_SECRET_KEY;
+}
+
 export async function onRequestGet(context) {
-    const { env } = context;
+    const { request, env } = context;
     const db = env.DB;
 
     if (!db) {
         return new Response(JSON.stringify({ error: "D1 database missing" }), { status: 500 });
+    }
+
+    if (!isAuthorized(request, env)) {
+        return new Response(JSON.stringify({ error: "Unauthorized: Admin key required to view customer orders" }), { 
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+        });
     }
 
     try {
@@ -45,6 +62,13 @@ export async function onRequestPatch(context) {
 
     if (!db) {
         return new Response(JSON.stringify({ error: "D1 database missing" }), { status: 500 });
+    }
+
+    if (!isAuthorized(request, env)) {
+        return new Response(JSON.stringify({ error: "Unauthorized: Admin key required" }), { 
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+        });
     }
 
     try {
