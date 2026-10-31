@@ -1,0 +1,16 @@
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Cloudflare Wrangler & Local D1 artifacts
+.wrangler/
+.mf/
+dist/
+node_modules/
+.env
+.env.local

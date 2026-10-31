@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Boutique Command Center — Mobile-First Admin Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       Boutique Admin Design System (Matching Kaka by Eliza Brand Palette)
+       ========================================================================== */
+    :root {
+      --brand-primary: #f76b6a;        /* Exact Kaka by Eliza coral */
+      --brand-primary-soft: #FEF3EE;
+      --brand-dark: #161616;           /* Luxury charcoal black */
+      --brand-dark-hover: #141414;
+      --bg-canvas: #FAF6F2;            /* Warm sand canvas */
+      --bg-surface: #FFFFFF;           /* Card white */
+      --border-subtle: #EAE3DC;
+      --text-heading: #1C1917;
+      --text-body: #44403C;
+      --text-muted: #78716C;
+      --status-success: #2E7D32;
+      --status-danger: #D32F2F;
+      --status-warning: #ED6C02;
+      --radius: 6px;
+      --radius-sm: 4px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Jost', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-body);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       Mobile Top Bar & Header
+       ========================================================================== */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--brand-dark);
+      color: #FFF;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      color: #FFF;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-brand {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mobile-brand span {
+      color: var(--brand-primary);
+    }
+
+    /* ==========================================================================
+       Sidebar Navigation (Desktop fixed, Mobile sliding drawer)
+       ========================================================================== */
+    aside.admin-sidebar {
+      width: 250px;
+      background-color: var(--brand-dark);
+      color: #EEE;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1050;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 1040;
+    }
+
+    .sidebar-brand-box {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #FFF;
+    }
+
+    .sidebar-brand-title span {
+      color: var(--brand-primary);
+    }
+
+    .sidebar-close-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #FFF;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    nav.sidebar-nav {
+      padding: 18px 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 22px;
+      color: #A7AAAD;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+      border-left-color: var(--brand-primary);
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--brand-primary);
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+    }
+
+    .sidebar-footer a {
+      color: #FFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ==========================================================================
+       Main Workspace Layout
+       ========================================================================== */
+    main.admin-content {
+      flex: 1;
+      padding: 30px 40px;
+      overflow-y: auto;
+      max-width: 1300px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .top-title {
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--brand-dark);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--brand-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+
+    .btn-primary {
+      background: var(--brand-dark);
+      color: #FFF;
+      border: 1px solid var(--brand-dark);
+      padding: 9px 18px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark-hover);
+    }
+
+    .btn-success {
+      background: var(--status-success);
+      color: #FFF;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ==========================================================================
+       Dashboard Stats Cards
+       ========================================================================== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-val {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--status-success);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       Content Boxes / Cards
+       ========================================================================== */
+    .content-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .box-title {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Responsive Table Container */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 10px;
+    }
+
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 600px;
+    }
+
+    table.admin-table th {
+      background: #FAF6F2;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+      color: var(--text-heading);
+    }
+
+    table.admin-table td {
+      padding: 14px;
+      border-bottom: 1px solid #F5F1EC;
+      vertical-align: middle;
+    }
+
+    /* Touch-Friendly Stock Stepper in Matrix */
+    .stock-chip-wrap {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stock-stepper-box {
+      display: flex;
+      align-items: center;
+      background: #FAF6F2;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 2px 4px;
+    }
+
+    .size-tag {
+      font-size: 11px;
+      font-weight: 700;
+      margin: 0 4px;
+      min-width: 18px;
+    }
+
+    .stepper-btn {
+      width: 26px;
+      height: 26px;
+      background: #FFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .stepper-btn:active {
+      background: #EEE;
+    }
+
+    .stepper-val {
+      width: 32px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .stepper-val.low {
+      color: var(--brand-primary);
+    }
+
+    .stepper-val.out {
+      color: var(--status-danger);
+    }
+
+    /* Form Fields */
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      color: var(--text-heading);
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      background: #FFFFFF;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--brand-primary);
+    }
+
+    .form-group .desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Photo Drop Zone */
+    .photo-drop-zone {
+      border: 2px dashed #D5CDC5;
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      background: #FAF6F2;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .photo-drop-zone:hover {
+      border-color: var(--brand-primary);
+      background: #FFFDF9;
+    }
+
+    .photo-preview-thumb {
+      width: 80px;
+      height: 106px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Mobile POS Quick Terminal Card */
+    .pos-product-card {
+      display: flex;
+      gap: 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .pos-product-img {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    .pos-product-info {
+      flex: 1;
+    }
+
+    .pos-size-pills {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pos-size-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: #FAF6F2;
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .pos-size-pill.active {
+      background: var(--brand-primary);
+      color: #FFF;
+      border-color: var(--brand-primary);
+    }
+
+    .pos-size-pill.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    /* Tabs */
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      gap: 3px;
+      flex: 1;
+      height: 100%;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--brand-primary);
+    }
+
+    .bottom-nav-item span.icon {
+      font-size: 18px;
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--brand-dark);
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 9999;
+      border-left: 4px solid var(--status-success);
+    }
+
+    /* ==========================================================================
+       Responsive Media Queries (Mobile & Tablet Breakpoints)
+       ========================================================================== */
+    @media (max-width: 991px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-top: 60px;
+        padding-bottom: 65px; /* space for mobile bottom nav */
+      }
+
+      .mobile-header {
+        display: flex;
+      }
+
+      .mobile-bottom-nav {
+        display: flex;
+      }
+
+      aside.admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+
+      aside.admin-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.open {
+        display: block;
+      }
+
+      .sidebar-close-btn {
+        display: block;
+      }
+
+      main.admin-content {
+        padding: 16px;
+      }
+
+      .top-bar {
+        margin-bottom: 16px;
+      }
+
+      .top-title {
+        font-size: 18px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-val {
+        font-size: 20px;
+      }
+
+      .form-row-2, .form-row-3 {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .content-box {
+        padding: 16px;
+        margin-bottom: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Top Header Bar -->
+  <header class="mobile-header">
+    <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle Navigation">☰</button>
+    <div class="mobile-brand">Kaka <span>Hub</span></div>
+    <a href="index.html" target="_blank" style="color:#FFF;text-decoration:none;font-size:18px;" title="Storefront">👁️</a>
+  </header>
+
+  <!-- Sidebar Backdrop Overlay on Mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Left Sidebar (Drawer on Mobile) -->
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="sidebar-brand-box">
+      <div class="sidebar-brand-title">Kaka <span>by Eliza</span></div>
+      <button class="sidebar-close-btn" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="switchNav('dashboard', this)">
+        <span>📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="switchNav('add-product', this)">
+        <span>➕</span> Add Product & Stock
+      </div>
+      <div class="nav-item" onclick="switchNav('matrix', this)">
+        <span>📦</span> Stock Matrix
+      </div>
+      <div class="nav-item" onclick="switchNav('pos', this)">
+        <span>🏪</span> In-Store POS Register
+      </div>
+      <div class="nav-item" onclick="switchNav('orders', this)">
+        <span>🚚</span> Orders & Dispatch
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item" onclick="switchNav('settings', this)">
+        <span>⚙️</span> Boutique Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="index.html" target="_blank">
+        <span>↗</span> Open Live Storefront
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Workspace -->
+  <main class="admin-content">
+    <div class="top-bar">
+      <h1 class="top-title" id="pageHeading">Boutique Operations Dashboard</h1>
+      <div class="top-actions">
+        <a href="index.html" class="btn-secondary" target="_blank">👁️ Live Storefront</a>
+        <button class="btn-primary" onclick="switchNav('add-product', document.querySelector('.nav-item:nth-child(2)'))">➕ Add New Piece</button>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 1: DASHBOARD
+         ====================================================================== -->
+    <div class="tab-pane active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Today's Sales</div>
+          <div class="stat-val">₹14,850</div>
+          <div class="stat-sub">↑ 8 orders via UPI</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Orders</div>
+          <div class="stat-val">3</div>
+          <div class="stat-sub" style="color: var(--status-warning);">Pack & Dispatch</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Urgency Pieces</div>
+          <div class="stat-val" style="color: var(--brand-primary);">4</div>
+          <div class="stat-sub">Showing "Only 1-2 Left"</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">In-Store Register</div>
+          <div class="stat-val">Synced</div>
+          <div class="stat-sub">● WCPOS Live</div>
+        </div>
+      </div>
+
+      <div class="content-box">
+        <div class="box-title">
+          <span>Recent Orders (Cashfree UPI)</span>
+          <button class="btn-secondary" onclick="switchNav('orders', document.querySelector('.nav-item:nth-child(5)'))" style="font-size:12px;padding:6px 12px;">View All</button>
+        </div>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Item & Size</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>#5774</strong></td>
+                <td>Sandra Joseph (Kochi)</td>
+                <td>Green Floral Flare Kurthi (S)</td>
+                <td>₹1,450</td>
+                <td><span style="background:#FEF3EE;color:#f76b6a;padding:3px 8px;border-radius:2px;font-weight:700;font-size:11px;">PROCESSING</span></td>
+              </tr>
+              <tr>
+                <td><strong>#5773</strong></td>
+                <td>Deepa Nair (Trivandrum)</td>
+                <td>Red Printed Peplum Top (M)</td>
+                <td>₹1,250</td>
+                <td><span style="background:#E8F5E9;color:#2E7D32;padding:3px 8px;border-radius:2px;font-weight:700;font-size:11px;">COMPLETED</span></td>
+              </tr>
+              <tr>
+                <td><strong>#5772</strong></td>
+                <td>Aparna V. (Calicut)</td>
+                <td>Amber Leaf Pastel Dress (L)</td>
+                <td>₹1,890</td>
+                <td><span style="background:#E8F5E9;color:#2E7D32;padding:3px 8px;border-radius:2px;font-weight:700;font-size:11px;">COMPLETED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 2: ADD NEW PRODUCT & STOCK (Mobile Touch-Optimized)
+         ====================================================================== -->
+    <div class="tab-pane" id="tab-add-product">
+      <div class="content-box">
+        <div class="box-title">
+          <span>👗 Add New Boutique Piece (Kurthi, Dress, Top)</span>
+          <button class="btn-primary" onclick="publishNewProduct()">Publish Piece</button>
+        </div>
+
+        <form id="newProductForm" onsubmit="event.preventDefault(); publishNewProduct();">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Product Title *</label>
+              <input type="text" id="newProdTitle" required placeholder="e.g. Indigo Bloom Handcrafted Kurthi" value="Indigo Bloom Pure Cotton Kurthi">
+              <div class="desc">Appears on shop catalog and product page.</div>
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="newProdCategory">
+                <option value="Kurthis">Kurthis</option>
+                <option value="Peplum Tops">Peplum Tops</option>
+                <option value="Dresses">Dresses</option>
+                <option value="Short Kurti">Short Kurti</option>
+                <option value="Co-ord set">Co-ord set</option>
+                <option value="In Store">In Store Only (Counter)</option>
+                <option value="Clearance Sale">Clearance Sale</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Regular Price (₹) *</label>
+              <input type="number" id="newProdPrice" required placeholder="1450" value="1450">
+            </div>
+            <div class="form-group">
+              <label>Sale Price (₹)</label>
+              <input type="number" id="newProdSalePrice" placeholder="Optional (e.g. 1290)">
+            </div>
+            <div class="form-group">
+              <label>Barcode / SKU (for POS Scanner)</label>
+              <input type="text" id="newProdSku" placeholder="KB-IND-01" value="KB-IND-01">
+            </div>
+          </div>
+
+          <!-- Photo Upload (Front & Secondary Hover Swap) -->
+          <div style="margin: 20px 0; border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">📷 Product Photos (3:4 Ratio)</label>
+            <p class="desc" style="margin-bottom: 14px;">Upload the front view and secondary back angle for the <strong>automatic hover-swap</strong>.</p>
+
+            <div class="form-row-2">
+              <div>
+                <label style="font-size: 11px; font-weight: 600; display: block; margin-bottom: 6px;">Front Photo (Main)</label>
+                <div class="photo-drop-zone" onclick="triggerUpload('front')">
+                  <div style="font-size: 26px; margin-bottom: 4px;">📸</div>
+                  <strong style="font-size: 12px;">Snap or Select Front Photo</strong>
+                  <div style="font-size: 10px; color: #888; margin-top: 2px;">3:4 Portrait Format</div>
+                </div>
+                <div id="frontPreviewBox" style="display:flex; gap:10px; margin-top:8px; align-items:center;">
+                  <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=300&q=80" class="photo-preview-thumb" alt="Front Preview">
+                  <span style="font-size: 11px; color: var(--status-success); font-weight: 600;">✓ Front Angle Loaded</span>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 11px; font-weight: 600; display: block; margin-bottom: 6px;">Back / Hover Photo</label>
+                <div class="photo-drop-zone" onclick="triggerUpload('back')">
+                  <div style="font-size: 26px; margin-bottom: 4px;">🔄</div>
+                  <strong style="font-size: 12px;">Snap or Select Hover Photo</strong>
+                  <div style="font-size: 10px; color: #888; margin-top: 2px;">Swaps on customer hover</div>
+                </div>
+                <div id="backPreviewBox" style="display:flex; gap:10px; margin-top:8px; align-items:center;">
+                  <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80" class="photo-preview-thumb" alt="Back Preview">
+                  <span style="font-size: 11px; color: var(--status-success); font-weight: 600;">✓ Hover Angle Loaded</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Size Variations & Stock Steppers -->
+          <div style="margin: 20px 0; border-top: 1px solid var(--border-subtle); padding-top: 18px;">
+            <label style="display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">📏 Size Inventory Quantities</label>
+            <p class="desc" style="margin-bottom: 12px;">Tap <strong>+</strong> or <strong>−</strong> to set pieces. Stock $\le 5$ triggers the <strong>"🔥 Only X left"</strong> urgency bar automatically.</p>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Size</th>
+                    <th>In-Stock Count</th>
+                    <th>Urgency Display</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>XS</strong> (Bust 34)</td>
+                    <td>
+                      <div class="stock-stepper-box">
+                        <button type="button" class="stepper-btn" onclick="stepVal('xs', -1)">−</button>
+                        <span class="stepper-val low" id="val-xs">1</span>
+                        <button type="button" class="stepper-btn" onclick="stepVal('xs', 1)">+</button>
+                      </div>
+                    </td>
+                    <td><span style="color:var(--brand-primary);font-weight:600;font-size:12px;">🔥 Only 1 left!</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>S</strong> (Bust 36)</td>
+                    <td>
+                      <div class="stock-stepper-box">
+                        <button type="button" class="stepper-btn" onclick="stepVal('s', -1)">−</button>
+                        <span class="stepper-val low" id="val-s">2</span>
+                        <button type="button" class="stepper-btn" onclick="stepVal('s', 1)">+</button>
+                      </div>
+                    </td>
+                    <td><span style="color:var(--brand-primary);font-weight:600;font-size:12px;">🔥 Only 2 left!</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>M</strong> (Bust 38)</td>
+                    <td>
+                      <div class="stock-stepper-box">
+                        <button type="button" class="stepper-btn" onclick="stepVal('m', -1)">−</button>
+                        <span class="stepper-val low" id="val-m">1</span>
+                        <button type="button" class="stepper-btn" onclick="stepVal('m', 1)">+</button>
+                      </div>
+                    </td>
+                    <td><span style="color:var(--brand-primary);font-weight:600;font-size:12px;">🔥 Only 1 left!</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>L</strong> (Bust 40)</td>
+                    <td>
+                      <div class="stock-stepper-box">
+                        <button type="button" class="stepper-btn" onclick="stepVal('l', -1)">−</button>
+                        <span class="stepper-val out" id="val-l">0</span>
+                        <button type="button" class="stepper-btn" onclick="stepVal('l', 1)">+</button>
+                      </div>
+                    </td>
+                    <td><span style="color:var(--text-muted);font-size:12px;">Sold Out (Disabled)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width:100%;padding:14px;font-size:14px;">Publish Piece to Online & Boutique POS</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 3: QUICK STOCK MATRIX (Touch Steppers on Mobile)
+         ====================================================================== -->
+    <div class="tab-pane" id="tab-matrix">
+      <div class="content-box">
+        <div class="box-title">
+          <span>📦 Fast Stock & Variation Matrix</span>
+          <button class="btn-primary" onclick="showToast('✓ Stock counts saved to WooCommerce & WCPOS!')">Save Changes</button>
+        </div>
+        <p class="desc" style="margin-bottom: 16px;">Quickly update inventory after walk-in boutique sales without opening individual product screens.</p>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="min-width: 180px;">Product Name</th>
+                <th style="min-width: 280px;">Size Quantities</th>
+                <th>POS Sync</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Green Floral Flare Kurthi</strong>
+                  <div style="font-size: 11px; color: #888;">Kurthis | SKU: KB-01</div>
+                </td>
+                <td>
+                  <div class="stock-chip-wrap">
+                    <div class="stock-stepper-box"><span class="size-tag">S:</span><span class="stepper-val low">1</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">M:</span><span class="stepper-val low">2</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">L:</span><span class="stepper-val out">0</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">XL:</span><span class="stepper-val low">1</span></div>
+                  </div>
+                </td>
+                <td><span style="color:var(--status-success);font-weight:600;font-size:11px;">● Synced</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Red Printed Peplum Top</strong>
+                  <div style="font-size: 11px; color: #888;">Peplum Tops | SKU: KB-02</div>
+                </td>
+                <td>
+                  <div class="stock-chip-wrap">
+                    <div class="stock-stepper-box"><span class="size-tag">XS:</span><span class="stepper-val low">2</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">S:</span><span class="stepper-val low">1</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">M:</span><span class="stepper-val out">0</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">L:</span><span class="stepper-val">4</span></div>
+                  </div>
+                </td>
+                <td><span style="color:var(--status-success);font-weight:600;font-size:11px;">● Synced</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Amber Leaf Pastel Dress</strong>
+                  <div style="font-size: 11px; color: #888;">Dresses | SKU: KB-03</div>
+                </td>
+                <td>
+                  <div class="stock-chip-wrap">
+                    <div class="stock-stepper-box"><span class="size-tag">S:</span><span class="stepper-val out">0</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">M:</span><span class="stepper-val low">1</span></div>
+                    <div class="stock-stepper-box"><span class="size-tag">L:</span><span class="stepper-val low">2</span></div>
+                  </div>
+                </td>
+                <td><span style="color:var(--status-success);font-weight:600;font-size:11px;">● Synced</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 4: 🏪 MOBILE IN-STORE POS QUICK REGISTER (Counter Cashier Mode)
+         ====================================================================== -->
+    <div class="tab-pane" id="tab-pos">
+      <div class="content-box">
+        <div class="box-title">
+          <span>🏪 Boutique Counter Register (WCPOS Mode)</span>
+          <span style="font-size: 11px; color: var(--status-success); font-weight: 700;">● Online Stock Linked</span>
+        </div>
+        <p class="desc" style="margin-bottom: 16px;">When a customer buys in your shop, select size and tap <strong>"Record Counter Sale"</strong> to immediately deduct online stock and prevent double-selling!</p>
+
+        <!-- Product 1 -->
+        <div class="pos-product-card">
+          <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=200&q=80" class="pos-product-img" alt="Kurthi">
+          <div class="pos-product-info">
+            <strong style="font-size: 13px;">Green Floral Flare Kurthi</strong>
+            <div style="font-size: 13px; color: var(--brand-primary); font-weight: 700;">₹1,450</div>
+            <div class="pos-size-pills">
+              <span class="pos-size-pill active" onclick="selectPosSize(this)">S (1 left)</span>
+              <span class="pos-size-pill" onclick="selectPosSize(this)">M (2 left)</span>
+              <span class="pos-size-pill disabled">L (Sold Out)</span>
+            </div>
+          </div>
+          <button class="btn-success" onclick="recordPosSale('Green Floral Flare Kurthi')">Sell (1)</button>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="pos-product-card">
+          <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=200&q=80" class="pos-product-img" alt="Peplum">
+          <div class="pos-product-info">
+            <strong style="font-size: 13px;">Red Printed Peplum Top</strong>
+            <div style="font-size: 13px; color: var(--brand-primary); font-weight: 700;">₹1,250</div>
+            <div class="pos-size-pills">
+              <span class="pos-size-pill active" onclick="selectPosSize(this)">XS (2 left)</span>
+              <span class="pos-size-pill" onclick="selectPosSize(this)">S (1 left)</span>
+              <span class="pos-size-pill disabled">M (Sold Out)</span>
+            </div>
+          </div>
+          <button class="btn-success" onclick="recordPosSale('Red Printed Peplum Top')">Sell (1)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 5: ORDERS & WHATSAPP DISPATCH
+         ====================================================================== -->
+    <div class="tab-pane" id="tab-orders">
+      <div class="content-box">
+        <div class="box-title">
+          <span>🚚 Order Packaging & WhatsApp Dispatch</span>
+        </div>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Courier Partner</th>
+                <th>AWB Tracking #</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>#5774</strong></td>
+                <td>Sandra Joseph<br><small>+91 98482 12345</small></td>
+                <td>
+                  <select style="padding:6px;font-size:12px;">
+                    <option>Delhivery Air Express</option>
+                    <option>DTDC Courier</option>
+                    <option>India Post</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" value="DL982347102" style="padding:6px;width:130px;font-size:12px;">
+                </td>
+                <td>
+                  <button class="btn-success" onclick="dispatchOrder('5774')">Dispatch & WhatsApp</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#5775</strong></td>
+                <td>Anjana M. (Ernakulam)<br><small>+91 97451 98765</small></td>
+                <td>
+                  <select style="padding:6px;font-size:12px;">
+                    <option>Delhivery Air Express</option>
+                    <option>DTDC Courier</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" placeholder="AWB Number" style="padding:6px;width:130px;font-size:12px;">
+                </td>
+                <td>
+                  <button class="btn-success" onclick="dispatchOrder('5775')">Dispatch & WhatsApp</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         TAB 6: BOUTIQUE SETTINGS
+         ====================================================================== -->
+    <div class="tab-pane" id="tab-settings">
+      <div class="content-box">
+        <div class="box-title">
+          <span>⚙️ Boutique Store Configuration</span>
+        </div>
+
+        <form onsubmit="saveSettings(event)">
+          <div class="form-group">
+            <label>Top Announcement Bar Text</label>
+            <input type="text" value="All India Free Shipping | 4 to 6 Days Delivery | Handcrafted in Kerala">
+            <div class="desc">Appears at the very top of all store pages.</div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Free Shipping Threshold (₹)</label>
+              <input type="number" value="999">
+              <div class="desc">Mini-cart calculates: "Add ₹X more for Free Delivery".</div>
+            </div>
+            <div class="form-group">
+              <label>Stock Urgency Limit</label>
+              <input type="number" value="5">
+              <div class="desc">Activates "🔥 Only X left!" when stock $\le$ this number.</div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Support WhatsApp Number</label>
+              <input type="text" value="919876543210">
+              <div class="desc">Include 91 country code.</div>
+            </div>
+            <div class="form-group">
+              <label>WhatsApp Automated Webhook</label>
+              <input type="url" value="https://api.interakt.ai/v1/webhook/sample">
+              <div class="desc">Sends automated order updates (AiSensy, Interakt, Wati).</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Save Boutique Settings</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Quick Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <div class="bottom-nav-item active" onclick="switchMobileNav('dashboard', this)">
+      <span class="icon">📊</span>
+      <span>Home</span>
+    </div>
+    <div class="bottom-nav-item" onclick="switchMobileNav('add-product', this)">
+      <span class="icon">➕</span>
+      <span>Add Piece</span>
+    </div>
+    <div class="bottom-nav-item" onclick="switchMobileNav('matrix', this)">
+      <span class="icon">📦</span>
+      <span>Stock</span>
+    </div>
+    <div class="bottom-nav-item" onclick="switchMobileNav('pos', this)">
+      <span class="icon">🏪</span>
+      <span>Counter</span>
+    </div>
+    <div class="bottom-nav-item" onclick="switchMobileNav('orders', this)">
+      <span class="icon">🚚</span>
+      <span>Orders</span>
+    </div>
+  </nav>
+
+  <!-- Toast Notification Message -->
+  <div class="toast-msg" id="toast">Settings Saved!</div>
+
+  <!-- Interactive State Controller -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    function switchNav(tabId, el) {
+      document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if (el) el.classList.add('active');
+
+      const headings = {
+        'dashboard': 'Boutique Operations Dashboard',
+        'add-product': 'Add New Product & Stock',
+        'matrix': 'Stock & Variation Matrix',
+        'pos': 'In-Store Counter POS Register',
+        'orders': 'Order Packaging & WhatsApp Dispatch',
+        'settings': 'Boutique Store Configuration'
+      };
+      document.getElementById('pageHeading').textContent = headings[tabId] || 'Admin Hub';
+
+      // Sync mobile bottom nav
+      document.querySelectorAll('.bottom-nav-item').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('onclick').includes(tabId));
+      });
+
+      // Close mobile drawer if open
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
+    function switchMobileNav(tabId, el) {
+      document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      switchNav(tabId, null);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function stepVal(id, delta) {
+      const el = document.getElementById('val-' + id);
+      let curr = parseInt(el.textContent, 10) + delta;
+      if (curr < 0) curr = 0;
+      el.textContent = curr;
+      el.className = 'stepper-val ' + (curr === 0 ? 'out' : (curr <= 5 ? 'low' : ''));
+    }
+
+    function triggerUpload(type) {
+      showToast(`📸 ${type === 'front' ? 'Primary Front' : 'Secondary Hover'} Photo Captured / Selected!`);
+    }
+
+    function publishNewProduct() {
+      const title = document.getElementById('newProdTitle').value;
+      const cat = document.getElementById('newProdCategory').value;
+      const price = document.getElementById('newProdPrice').value;
+      showToast(`🎉 "${title}" published to ${cat} at ₹${price}! Stock synced to Online & In-Store.`);
+      setTimeout(() => { switchNav('matrix'); }, 1500);
+    }
+
+    function selectPosSize(el) {
+      if (el.classList.contains('disabled')) return;
+      el.parentElement.querySelectorAll('.pos-size-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function recordPosSale(title) {
+      showToast(`🧾 Counter Sale Recorded for "${title}"! Online stock reduced by 1.`);
+    }
+
+    function dispatchOrder(id) {
+      showToast(`🚚 Order #${id} dispatched! WhatsApp tracking message triggered.`);
+    }
+
+    function saveSettings(e) {
+      e.preventDefault();
+      showToast('✓ Boutique settings saved successfully!');
+    }
+  </script>
+</body>
+</html>

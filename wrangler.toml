@@ -1,0 +1,21 @@
+name = "ecomtemplatecloudflare"
+compatibility_date = "2026-10-31"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "public"
+
+# ==============================================================================
+# Cloudflare D1 Database Binding
+# Create via: npx wrangler d1 create ecom_boutique_db
+# ==============================================================================
+[[d1_databases]]
+binding = "DB"
+database_name = "ecom_boutique_db"
+database_id = "local-d1-placeholder"
+
+# ==============================================================================
+# Cloudflare R2 Object Storage (Product Photos)
+# Create via: npx wrangler r2 bucket create boutique-photos
+# ==============================================================================
+[[r2_buckets]]
+binding = "PHOTOS"
+bucket_name = "boutique-photos"

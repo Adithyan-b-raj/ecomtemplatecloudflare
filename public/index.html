@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kaka by Eliza — Exact Design System & Boutique Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       Design Tokens Extracted Directly from https://kakabyeliza.com
+       ========================================================================== */
+    :root {
+      --font-primary: 'Jost', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-accent: 'GFS Didot', 'Times New Roman', serif;
+
+      --color-primary: #f76b6a;        /* Exact Kaka by Eliza Primary Coral Accent */
+      --color-dark: #161616;           /* Exact Kaka by Eliza Button & Heading Black */
+      --color-dark-hover: #141414;
+      --color-body: #333333;
+      --color-muted: #888888;
+      --bg-main: #FFFDF9;              /* Warm off-white canvas */
+      --bg-sand: #FAF6F2;              /* Section & banner sand */
+      --bg-bar-track: #EBEBEC;         /* Exact progress bar track */
+      --border-color: #EAE3DC;
+
+      --grid-gap-desktop: 35px 20px;   /* Exact desktop grid gap */
+      --grid-gap-mobile: 20px 15px;    /* Exact mobile grid gap */
+      --radius: 2px;                   /* Exact subtle 2px radius */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-main);
+      color: var(--color-body);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Top Announcement Bar (Exact Kaka Style) */
+    .announcement-bar {
+      background-color: var(--bg-sand);
+      color: var(--color-dark);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: center;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Main Header */
+    header {
+      background: #FFFFFF !important;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* Mobile Hamburger Trigger */
+    .mobile-hamburger-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--color-dark);
+      cursor: pointer;
+      padding: 4px 8px 4px 0;
+      line-height: 1;
+    }
+
+    .brand-logo {
+      font-family: var(--font-accent);
+      font-size: 26px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--color-dark) !important;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .brand-logo span {
+      font-family: var(--font-primary);
+      color: var(--color-primary);
+      font-size: 13px;
+      letter-spacing: 2px;
+      font-weight: 300;
+      display: block;
+      margin-top: -4px;
+    }
+
+    /* Desktop Navigation Menu */
+    nav.desktop-nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    nav.desktop-nav a {
+      text-decoration: none;
+      color: var(--color-dark);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    nav.desktop-nav a:hover, nav.desktop-nav a.active {
+      color: var(--color-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--color-dark);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    .cart-badge {
+      background: var(--color-primary);
+      color: #FFF;
+      font-size: 10px;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       Mobile Slide-In Navigation Drawer
+       ========================================================================== */
+    .mobile-drawer-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(2px);
+      z-index: 1050;
+    }
+
+    .mobile-drawer-overlay.open {
+      display: block;
+    }
+
+    .mobile-nav-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      max-width: 80%;
+      height: 100%;
+      background: #FFFFFF;
+      z-index: 1060;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .mobile-nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    .mobile-drawer-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-sand);
+    }
+
+    .mobile-drawer-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-dark);
+    }
+
+    .mobile-drawer-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--color-dark);
+    }
+
+    .mobile-drawer-links {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 0;
+    }
+
+    .mobile-drawer-link {
+      display: block;
+      padding: 12px 24px;
+      color: var(--color-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid #FAF6F2;
+      transition: all 0.2s;
+    }
+
+    .mobile-drawer-link:hover, .mobile-drawer-link.active {
+      color: var(--color-primary);
+      background: #FFF5F4;
+      padding-left: 28px;
+    }
+
+    .mobile-drawer-link.in-store {
+      color: #263238;
+      font-weight: 700;
+    }
+
+    .mobile-drawer-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-sand);
+    }
+
+    .mobile-drawer-admin-btn {
+      display: block;
+      text-align: center;
+      background: var(--color-dark);
+      color: #FFF;
+      text-decoration: none;
+      padding: 11px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(180deg, #FAF6F2 0%, #FFFDF9 100%);
+      padding: 60px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-banner h1 {
+      font-family: var(--font-accent);
+      font-size: 38px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .hero-banner p {
+      font-size: 15px;
+      color: var(--color-muted);
+      max-width: 600px;
+      margin: 0 auto 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background: var(--color-dark);
+      color: #FFF;
+      text-decoration: none;
+      padding: 13px 34px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: var(--radius);
+      transition: background 0.2s;
+    }
+
+    .hero-btn:hover {
+      background: var(--color-dark-hover);
+    }
+
+    /* Category Navigation Pills (Exact Collections from Kaka by Eliza) */
+    .category-pills-wrap {
+      max-width: 1240px;
+      margin: 25px auto 10px;
+      padding: 0 16px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cat-pill {
+      border: 1px solid var(--border-color);
+      background: #FFFFFF;
+      padding: 7px 16px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-dark);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .cat-pill:hover, .cat-pill.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #FFFFFF;
+    }
+
+    .cat-pill.in-store {
+      background: #263238;
+      border-color: #263238;
+      color: #FFF;
+    }
+
+    /* Product Grid Section (Exact 4 Columns & 35px 20px gap) */
+    .shop-section {
+      max-width: 1240px;
+      margin: 25px auto 70px;
+      padding: 0 20px;
+    }
+
+    .shop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .shop-title {
+      font-size: 17px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .filter-instock-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--grid-gap-desktop);
+    }
+
+    .product-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 133.33%; /* 3:4 portrait ratio */
+      overflow: hidden;
+      background: #F4EFEB;
+    }
+
+    .product-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-img-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover .product-img-hover {
+      opacity: 1;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 5;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 4px 8px;
+      border-radius: var(--radius);
+    }
+
+    .card-badge.urgency {
+      background: #FEF3EE;
+      color: var(--color-primary);
+      border: 1px solid rgba(247, 107, 106, 0.4);
+    }
+
+    .card-badge.in-store {
+      background: #263238;
+      color: #FFF;
+    }
+
+    .card-badge.sold-out {
+      background: #424242;
+      color: #FFF;
+    }
+
+    .product-info {
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-category-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-muted);
+      margin-bottom: 4px;
+    }
+
+    .product-title {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-dark);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .product-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-top: auto;
+    }
+
+    .product-price del {
+      color: var(--color-muted);
+      font-size: 12px;
+      margin-right: 6px;
+      font-weight: 400;
+    }
+
+    /* Product Detail Modal (Single Product Showcase) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      max-width: 860px;
+      width: 100%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(0, 0, 0, 0.05);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-img-col {
+      background: #F4EFEB;
+    }
+
+    .modal-img-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-details-col {
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      color: var(--color-dark);
+    }
+
+    .modal-price {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 14px;
+    }
+
+    /* Exact Step 3: Stock Countdown Bar */
+    .custom-stock-bar {
+      margin: 14px 0 20px;
+      padding: 12px 14px;
+      background: #FEF3EE;
+      border: 1px solid rgba(247, 107, 106, 0.3);
+      border-radius: var(--radius);
+    }
+
+    .custom-stock-bar span {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #333333;
+      margin-bottom: 8px;
+    }
+
+    .custom-stock-bar span b {
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: var(--bg-bar-track);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius);
+      transition: width 0.4s ease;
+      animation: stock-progress-bar 8s ease;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes stock-progress-bar {
+      from { width: 100%; }
+    }
+
+    /* Size Swatch Buttons */
+    .swatch-group-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .swatches-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .swatch-btn {
+      min-width: 44px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--border-color);
+      background: #FFF;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .swatch-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .swatch-btn.selected {
+      border-color: var(--color-primary);
+      background: #FFF5F4;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    .swatch-btn.out-stock {
+      opacity: 0.35;
+      cursor: not-allowed;
+      text-decoration: line-through;
+      background: #F7F7F7;
+    }
+
+    /* Add to Cart CTA (Exact #161616 with #141414 Hover) */
+    .add-to-cart-cta {
+      background: var(--color-dark);
+      color: #FFF;
+      border: 1px solid var(--color-dark);
+      padding: 13px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .add-to-cart-cta:hover {
+      background: var(--color-dark-hover);
+    }
+
+    .add-to-cart-cta:disabled {
+      background: #CCC;
+      border-color: #CCC;
+      cursor: not-allowed;
+    }
+
+    .boutique-perks {
+      font-size: 12px;
+      color: var(--color-muted);
+      line-height: 1.6;
+      border-top: 1px solid var(--border-color);
+      padding-top: 12px;
+      margin-top: auto;
+    }
+
+    /* Slide-Out Mini-Cart Drawer */
+    .cart-drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1050;
+      display: none;
+    }
+
+    .cart-drawer-overlay.open {
+      display: block;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 360px;
+      height: 100%;
+      background: #FFFFFF;
+      z-index: 1060;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-drawer-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-drawer-title {
+      font-size: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .free-shipping-drawer-bar {
+      background: var(--bg-sand);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .free-shipping-drawer-bar strong {
+      color: var(--color-primary);
+    }
+
+    .free-shipping-track {
+      width: 100%;
+      height: 5px;
+      background: var(--bg-bar-track);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .free-shipping-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius);
+      transition: width 0.3s ease;
+    }
+
+    .cart-drawer-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+    }
+
+    .cart-item-card {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-item-img {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-dark);
+    }
+
+    .cart-item-variant {
+      font-size: 11px;
+      color: var(--color-muted);
+      margin: 2px 0 4px;
+    }
+
+    .cart-item-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .cart-drawer-footer {
+      padding: 18px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-sand);
+    }
+
+    .cart-subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--color-dark);
+      color: #FFF;
+      border: 1px solid var(--color-dark);
+      padding: 13px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background: var(--color-dark-hover);
+    }
+
+    /* Checkout & Cashfree Modal */
+    .checkout-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .checkout-modal-overlay.open {
+      display: flex;
+    }
+
+    .checkout-box {
+      background: #FFF;
+      max-width: 480px;
+      width: 100%;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .cashfree-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg-sand);
+      border-radius: var(--radius);
+      font-size: 11px;
+      margin: 14px 0;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Floating WhatsApp Button */
+    .wa-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+      z-index: 998;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Desktop Floating Admin Button */
+    .admin-pill-floating {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: #161616;
+      color: #FFF;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ==========================================================================
+       Mobile-First Responsive Adjustments (Fixes screenshot issue)
+       ========================================================================== */
+    @media (max-width: 991px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        padding: 12px 16px;
+      }
+
+      /* SHOW Hamburger on mobile */
+      .mobile-hamburger-btn {
+        display: block !important;
+      }
+
+      /* HIDE Desktop Navigation on mobile completely */
+      nav.desktop-nav {
+        display: none !important;
+      }
+
+      .brand-logo {
+        font-size: 21px;
+      }
+
+      .brand-logo span {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+      }
+
+      .hero-banner {
+        padding: 40px 16px;
+      }
+
+      .hero-banner h1 {
+        font-size: 28px;
+        letter-spacing: 1px;
+      }
+
+      .hero-banner p {
+        font-size: 14px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--grid-gap-mobile);
+      }
+
+      .modal-box {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-img-col {
+        height: 280px;
+      }
+
+      /* HIDE floating admin pill on mobile to avoid blocking category pills */
+      .admin-pill-floating {
+        display: none !important;
+      }
+
+      .wa-float-btn {
+        bottom: 20px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar (Exact Kaka Style) -->
+  <div class="announcement-bar">
+    All India Free Shipping &nbsp;|&nbsp; 4 to 6 Days Delivery &nbsp;|&nbsp; Handcrafted in Kerala
+  </div>
+
+  <!-- Header with Mobile Hamburger -->
+  <header>
+    <div class="header-container">
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-hamburger-btn" onclick="openMobileNav()" aria-label="Open Navigation Menu">☰</button>
+
+      <!-- Center Logo -->
+      <a href="#" class="brand-logo">Kaka <span>by Eliza</span></a>
+
+      <!-- Desktop Navigation Menu (Hidden on phones) -->
+      <nav class="desktop-nav">
+        <a href="#" class="active">Home</a>
+        <a href="#shop" onclick="filterCategory('All')">All</a>
+        <a href="#shop" onclick="filterCategory('Kurthis')">Kurthis</a>
+        <a href="#shop" onclick="filterCategory('Peplum Tops')">Peplum Tops</a>
+        <a href="#shop" onclick="filterCategory('Dresses')">Dresses</a>
+        <a href="#shop" onclick="filterCategory('Short Kurti')">Short Kurti</a>
+        <a href="#shop" onclick="filterCategory('In Store')">In Store</a>
+        <a href="#tracker" onclick="openTrackerModal()">Track Order</a>
+      </nav>
+
+      <!-- Header Right Actions -->
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openTrackerModal()" title="Track Order">📦</button>
+        <button class="header-icon-btn" onclick="openCartDrawer()" title="Shopping Bag">
+          🛍️ <span class="cart-badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Slide-In Navigation Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-drawer-header">
+      <span class="mobile-drawer-title">Boutique Menu</span>
+      <button class="mobile-drawer-close" onclick="closeMobileNav()">✕</button>
+    </div>
+    <div class="mobile-drawer-links">
+      <a href="#" class="mobile-drawer-link active" onclick="closeMobileNav()">🏠 Home</a>
+      <a href="#shop" class="mobile-drawer-link" onclick="closeMobileNav(); filterCategory('All')">👗 All Collections</a>
+      <a href="#shop" class="mobile-drawer-link" onclick="closeMobileNav(); filterCategory('Kurthis')">🌸 Kurthis</a>
+      <a href="#shop" class="mobile-drawer-link" onclick="closeMobileNav(); filterCategory('Peplum Tops')">✨ Peplum Tops</a>
+      <a href="#shop" class="mobile-drawer-link" onclick="closeMobileNav(); filterCategory('Dresses')">🎀 Dresses</a>
+      <a href="#shop" class="mobile-drawer-link" onclick="closeMobileNav(); filterCategory('Short Kurti')">🌿 Short Kurti</a>
+      <a href="#shop" class="mobile-drawer-link in-store" onclick="closeMobileNav(); filterCategory('In Store')">🏬 In Store Only</a>
+      <a href="#tracker" class="mobile-drawer-link" onclick="closeMobileNav(); openTrackerModal()">📦 Track Your Order</a>
+    </div>
+    <div class="mobile-drawer-footer">
+      <a href="admin.html" class="mobile-drawer-admin-btn">⚙️ Open Boutique Admin Hub</a>
+      <div style="font-size: 11px; color: #888; text-align: center; margin-top: 10px;">WhatsApp: +91 98765 43210</div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-banner">
+    <h1>Handcrafted Elegance</h1>
+    <p>Discover pure cotton kurthis, chic peplum tops, and stylish dresses. Effortless style, made in Kerala.</p>
+    <a href="#shop" class="hero-btn">Explore Collection</a>
+  </section>
+
+  <!-- Category Filter Pills (Exact Collections from Kaka by Eliza) -->
+  <div class="category-pills-wrap">
+    <button class="cat-pill active" onclick="filterCategory('All')">All</button>
+    <button class="cat-pill" onclick="filterCategory('Kurthis')">Kurthis</button>
+    <button class="cat-pill" onclick="filterCategory('Peplum Tops')">Peplum Tops</button>
+    <button class="cat-pill" onclick="filterCategory('Dresses')">Dresses</button>
+    <button class="cat-pill" onclick="filterCategory('Short Kurti')">Short Kurti</button>
+    <button class="cat-pill in-store" onclick="filterCategory('In Store')">In Store</button>
+  </div>
+
+  <!-- Shop Grid Section (4 Columns Desktop, 2 Columns Mobile) -->
+  <section class="shop-section" id="shop">
+    <div class="shop-header">
+      <h2 class="shop-title" id="catalogTitle">All Collections</h2>
+      <label class="filter-instock-toggle">
+        <input type="checkbox" id="inStockFilter" onchange="toggleInStockOnly(this.checked)">
+        <span>In Stock Only</span>
+      </label>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Injected via JavaScript -->
+    </div>
+  </section>
+
+  <!-- Single Product Showcase Modal (Step 3 Exact Stock Urgency Bar) -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+      <div class="modal-img-col">
+        <img id="modalImg" src="" alt="Product View">
+      </div>
+      <div class="modal-details-col">
+        <div class="product-category-tag" id="modalCategory">Kurthis</div>
+        <h2 class="modal-title" id="modalTitle">Product Title</h2>
+        <div class="modal-price" id="modalPrice">₹1,450</div>
+
+        <!-- Step 3: Exact Stock Countdown Bar -->
+        <div class="custom-stock-bar" id="modalUrgencyBox">
+          <span id="urgencyText">Only <b>1</b> left in stock!</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="urgencyFill" style="width: 20%;"></div>
+          </div>
+        </div>
+
+        <!-- Size Swatches -->
+        <div class="swatch-group-label">Size:</div>
+        <div class="swatches-wrap" id="swatchList">
+          <!-- Swatches injected dynamically -->
+        </div>
+
+        <button class="add-to-cart-cta" id="modalAddToCartBtn" onclick="handleAddToCartFromModal()">Add to Bag</button>
+
+        <div class="boutique-perks">
+          ✓ Handcrafted in Kerala with pure breathable cotton<br>
+          ✓ 4–6 business days domestic delivery across India<br>
+          ✓ Omnichannel in-store POS stock synchronization
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-Out Mini-Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <span class="cart-drawer-title">Shopping Bag</span>
+      <button class="modal-close" style="position:static;" onclick="closeCartDrawer()">✕</button>
+    </div>
+
+    <!-- Free Shipping Progress Tracker (₹999 threshold) -->
+    <div class="free-shipping-drawer-bar">
+      <span id="freeShippingStatus">Add ₹249 more to unlock <strong>FREE Shipping!</strong></span>
+      <div class="free-shipping-track">
+        <div class="free-shipping-fill" id="freeShippingFill" style="width: 75%;"></div>
+      </div>
+    </div>
+
+    <div class="cart-drawer-items" id="cartItemList">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-subtotal-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">₹0</span>
+      </div>
+      <button class="checkout-btn" onclick="openCheckoutModal()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Express Checkout Modal with Cashfree UPI -->
+  <div class="checkout-modal-overlay" id="checkoutModal">
+    <div class="checkout-box">
+      <button class="modal-close" onclick="closeCheckoutModal()">✕</button>
+      <h3 style="font-size: 16px; text-transform: uppercase; margin-bottom: 6px;">Express Checkout</h3>
+      <p style="font-size: 12px; color: var(--color-muted); margin-bottom: 16px;">Orders are processed within 2–3 business days.</p>
+
+      <form id="checkoutForm" onsubmit="simulateCashfreePayment(event)">
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; display: block; margin-bottom: 4px;">Full Name *</label>
+          <input type="text" required placeholder="e.g. Sandra Joseph" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 2px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; display: block; margin-bottom: 4px;">Mobile Number (for WhatsApp delivery updates) *</label>
+          <input type="tel" required pattern="[0-9]{10}" placeholder="10-digit mobile number" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 2px;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; display: block; margin-bottom: 4px;">City / District *</label>
+            <input type="text" required placeholder="Kochi" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 2px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; display: block; margin-bottom: 4px;">PIN Code *</label>
+            <input type="text" required pattern="[0-9]{6}" placeholder="682001" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 2px;">
+          </div>
+        </div>
+
+        <div class="cashfree-badge">
+          <span>🔒</span>
+          <span><strong>Cashfree Payments:</strong> Instant UPI (GPay, PhonePe, Paytm), Cards & NetBanking.</span>
+        </div>
+
+        <button type="submit" class="checkout-btn" id="payBtn">Pay with UPI / Cashfree</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Self-Service Order Tracking Modal -->
+  <div class="checkout-modal-overlay" id="trackerModal">
+    <div class="checkout-box" style="max-width: 540px;">
+      <button class="modal-close" onclick="closeTrackerModal()">✕</button>
+      <h3 style="font-size: 16px; text-transform: uppercase; margin-bottom: 6px;">Track Your Order</h3>
+      <p style="font-size: 12px; color: var(--color-muted); margin-bottom: 16px;">Enter your Order ID to see delivery status.</p>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 18px;">
+        <input type="text" id="trackInput" placeholder="Order ID (e.g. #5319)" value="#5319" style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 2px;">
+        <button type="button" class="hero-btn" style="padding: 10px 18px;" onclick="simulateTrack()">Track</button>
+      </div>
+
+      <div id="trackResult" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
+          <strong>Order #5319 (Amber Leaf Dress)</strong>
+          <span style="font-size: 11px; font-weight: 700; color: #f76b6a; background: #FEF3EE; padding: 3px 8px; border-radius: 2px;">Dispatched</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; text-align: center; margin: 20px 0;">
+          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #2E7D32; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">✓</div><span style="font-size: 11px;">Placed</span></div>
+          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #2E7D32; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">✓</div><span style="font-size: 11px;">Packed</span></div>
+          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #f76b6a; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</div><span style="font-size: 11px; font-weight: 600;">In Transit</span></div>
+          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #DDD; color: #888; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">4</div><span style="font-size: 11px;">Delivered</span></div>
+        </div>
+
+        <div style="font-size: 12px; background: #FAF6F2; padding: 12px; border-radius: 2px;">
+          📦 <strong>Courier:</strong> Delhivery Air Express<br>
+          📍 <strong>Estimated Delivery:</strong> Within 4–6 business days
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Floating Admin Switcher (Hidden on Mobile) -->
+  <a href="admin.html" class="admin-pill-floating">
+    ⚙️ Boutique Admin Hub
+  </a>
+
+  <!-- Floating WhatsApp Support -->
+  <a href="https://wa.me/919876543210?text=Hello%20Kaka%20by%20Eliza%2C%20I%20have%20an%20inquiry%20regarding%20your%20collection" target="_blank" class="wa-float-btn" title="Chat on WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+  </a>
+
+  <!-- Frontend Logic & State Script -->
+  <script>
+    // Exact Product Catalog from kakabyeliza.com
+    const products = [
+      {
+        id: 1,
+        title: "Green Floral Flare Kurthi",
+        category: "Kurthis",
+        price: 1450,
+        originalPrice: 1799,
+        img: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=700&q=80",
+        badge: "Only 1 Left",
+        badgeType: "urgency",
+        variations: [
+          { size: "S", stock: 1 },
+          { size: "M", stock: 2 },
+          { size: "L", stock: 0 },
+          { size: "XL", stock: 1 }
+        ]
+      },
+      {
+        id: 2,
+        title: "Red Printed Peplum Top",
+        category: "Peplum Tops",
+        price: 1250,
+        originalPrice: null,
+        img: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=700&q=80",
+        badge: "Hot Piece",
+        badgeType: "urgency",
+        variations: [
+          { size: "XS", stock: 2 },
+          { size: "S", stock: 1 },
+          { size: "M", stock: 0 },
+          { size: "L", stock: 3 }
+        ]
+      },
+      {
+        id: 3,
+        title: "Amber Leaf Pastel Dress",
+        category: "Dresses",
+        price: 1890,
+        originalPrice: 2200,
+        img: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=700&q=80",
+        badge: "Only 2 Left",
+        badgeType: "urgency",
+        variations: [
+          { size: "S", stock: 0 },
+          { size: "M", stock: 1 },
+          { size: "L", stock: 2 }
+        ]
+      },
+      {
+        id: 4,
+        title: "Kochi Heritage In-Store Kurthi",
+        category: "In Store",
+        price: 1650,
+        originalPrice: null,
+        img: "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=700&q=80",
+        badge: "In Store",
+        badgeType: "in-store",
+        variations: [
+          { size: "M", stock: 1 },
+          { size: "L", stock: 1 }
+        ]
+      },
+      {
+        id: 5,
+        title: "Sand Dune Cotton Dress",
+        category: "Dresses",
+        price: 1750,
+        originalPrice: null,
+        img: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1550614000-4895a10e1bfd?auto=format&fit=crop&w=700&q=80",
+        badge: "Only 1 Left",
+        badgeType: "urgency",
+        variations: [
+          { size: "S", stock: 1 },
+          { size: "M", stock: 0 }
+        ]
+      },
+      {
+        id: 6,
+        title: "Zo Chic Short Kurti",
+        category: "Short Kurti",
+        price: 1100,
+        originalPrice: null,
+        img: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=700&q=80",
+        badge: "Sold Out",
+        badgeType: "sold-out",
+        variations: [
+          { size: "S", stock: 0 },
+          { size: "M", stock: 0 },
+          { size: "L", stock: 0 }
+        ]
+      },
+      {
+        id: 7,
+        title: "Roselle Bloom Peplum Top",
+        category: "Peplum Tops",
+        price: 1350,
+        originalPrice: 1550,
+        img: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=700&q=80",
+        badge: "Only 2 Left",
+        badgeType: "urgency",
+        variations: [
+          { size: "S", stock: 2 },
+          { size: "M", stock: 1 }
+        ]
+      },
+      {
+        id: 8,
+        title: "Cocoa Charm Pure Cotton Top",
+        category: "Peplum Tops",
+        price: 1290,
+        originalPrice: null,
+        img: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=700&q=80",
+        hoverImg: "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=700&q=80",
+        badge: "Only 1 Left",
+        badgeType: "urgency",
+        variations: [
+          { size: "M", stock: 1 },
+          { size: "L", stock: 0 }
+        ]
+      }
+    ];
+
+    let currentCategory = 'All';
+    let filterInStockOnly = false;
+    let selectedProduct = null;
+    let selectedSize = null;
+    let cart = [];
+
+    // Mobile Navigation Controls
+    function openMobileNav() {
+      document.getElementById('mobileNavDrawer').classList.add('open');
+      document.getElementById('mobileDrawerOverlay').classList.add('open');
+    }
+
+    function closeMobileNav() {
+      document.getElementById('mobileNavDrawer').classList.remove('open');
+      document.getElementById('mobileDrawerOverlay').classList.remove('open');
+    }
+
+    // Render Product Cards (Exact 4 Columns & 35px 20px gap)
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      const filtered = products.filter(p => {
+        const matchesCat = (currentCategory === 'All') || (p.category === currentCategory);
+        const hasStock = p.variations.some(v => v.stock > 0);
+        if (filterInStockOnly && !hasStock) return false;
+        return matchesCat;
+      });
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.onclick = () => openProductModal(p.id);
+
+        let badgeHtml = '';
+        if (p.badge) {
+          badgeHtml = `<span class="card-badge ${p.badgeType}">${p.badge}</span>`;
+        }
+
+        const priceHtml = p.originalPrice 
+          ? `<del>₹${p.originalPrice}</del>₹${p.price}` 
+          : `₹${p.price}`;
+
+        card.innerHTML = `
+          ${badgeHtml}
+          <div class="product-img-wrap">
+            <img class="product-img" src="${p.img}" alt="${p.title}">
+            <img class="product-img-hover" src="${p.hoverImg}" alt="${p.title}">
+          </div>
+          <div class="product-info">
+            <div class="product-category-tag">${p.category}</div>
+            <div class="product-title">${p.title}</div>
+            <div class="product-price">${priceHtml}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Category Filter Handler
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === cat);
+      });
+      document.querySelectorAll('.mobile-drawer-link').forEach(link => {
+        link.classList.toggle('active', link.textContent.includes(cat));
+      });
+      document.getElementById('catalogTitle').textContent = cat === 'All' ? 'All Collections' : cat;
+      renderProducts();
+    }
+
+    // In Stock Only Toggle
+    function toggleInStockOnly(checked) {
+      filterInStockOnly = checked;
+      renderProducts();
+    }
+
+    // Open Product Detail Modal
+    function openProductModal(id) {
+      selectedProduct = products.find(p => p.id === id);
+      if (!selectedProduct) return;
+
+      document.getElementById('modalImg').src = selectedProduct.img;
+      document.getElementById('modalCategory').textContent = selectedProduct.category;
+      document.getElementById('modalTitle').textContent = selectedProduct.title;
+      document.getElementById('modalPrice').textContent = '₹' + selectedProduct.price;
+
+      // Render Swatches
+      const swatchContainer = document.getElementById('swatchList');
+      swatchContainer.innerHTML = '';
+      selectedSize = null;
+
+      selectedProduct.variations.forEach(v => {
+        const btn = document.createElement('button');
+        btn.className = 'swatch-btn' + (v.stock === 0 ? ' out-stock' : '');
+        btn.textContent = v.size;
+        btn.onclick = () => selectSizeSwatch(v);
+        swatchContainer.appendChild(btn);
+      });
+
+      // Select first available size by default
+      const firstAvailable = selectedProduct.variations.find(v => v.stock > 0);
+      if (firstAvailable) {
+        selectSizeSwatch(firstAvailable);
+      } else {
+        updateUrgencyBar(0);
+        document.getElementById('modalAddToCartBtn').disabled = true;
+        document.getElementById('modalAddToCartBtn').textContent = 'Sold Out';
+      }
+
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function selectSizeSwatch(v) {
+      selectedSize = v;
+      document.querySelectorAll('.swatch-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.textContent === v.size);
+      });
+
+      updateUrgencyBar(v.stock);
+
+      const btn = document.getElementById('modalAddToCartBtn');
+      if (v.stock === 0) {
+        btn.disabled = true;
+        btn.textContent = 'Sold Out in this Size';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Add to Bag';
+      }
+    }
+
+    // Dynamic Step 3 Urgency Bar Calculation
+    function updateUrgencyBar(stock) {
+      const urgencyText = document.getElementById('urgencyText');
+      const urgencyFill = document.getElementById('urgencyFill');
+
+      if (stock === 0) {
+        urgencyText.innerHTML = '⚠️ <b>Sold Out</b> in this size';
+        urgencyFill.style.width = '0%';
+        urgencyFill.style.background = '#9E9E9E';
+      } else if (stock <= 5) {
+        urgencyText.innerHTML = `Only <b>${stock}</b> left in stock!`;
+        const pct = Math.min(100, Math.max(20, stock * 20));
+        urgencyFill.style.width = pct + '%';
+        urgencyFill.style.background = '#f76b6a';
+      } else {
+        urgencyText.innerHTML = '✅ <b>In Stock</b> & Ready for Dispatch';
+        urgencyFill.style.width = '100%';
+        urgencyFill.style.background = '#2E7D32';
+      }
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.remove('open');
+    }
+
+    // Cart Handlers
+    function handleAddToCartFromModal() {
+      if (!selectedProduct || !selectedSize || selectedSize.stock === 0) return;
+
+      cart.push({
+        id: selectedProduct.id,
+        title: selectedProduct.title,
+        price: selectedProduct.price,
+        size: selectedSize.size,
+        img: selectedProduct.img
+      });
+
+      closeProductModal();
+      updateCartUI();
+      openCartDrawer();
+    }
+
+    function updateCartUI() {
+      document.getElementById('cartCount').textContent = cart.length;
+
+      const list = document.getElementById('cartItemList');
+      list.innerHTML = '';
+
+      let subtotal = 0;
+
+      cart.forEach((item, index) => {
+        subtotal += item.price;
+        const row = document.createElement('div');
+        row.className = 'cart-item-card';
+        row.innerHTML = `
+          <img class="cart-item-img" src="${item.img}" alt="${item.title}">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.title}</div>
+            <div class="cart-item-variant">Size: <strong>${item.size}</strong></div>
+            <div class="cart-item-price">₹${item.price}</div>
+          </div>
+          <button onclick="removeFromCart(${index})" style="background:none;border:none;color:#999;cursor:pointer;font-size:16px;">✕</button>
+        `;
+        list.appendChild(row);
+      });
+
+      document.getElementById('cartSubtotal').textContent = '₹' + subtotal;
+
+      // Free Shipping Threshold Progress (₹999)
+      const threshold = 999;
+      const status = document.getElementById('freeShippingStatus');
+      const fill = document.getElementById('freeShippingFill');
+
+      if (subtotal >= threshold) {
+        status.innerHTML = '🎉 You unlocked <strong>FREE Shipping!</strong>';
+        fill.style.width = '100%';
+      } else {
+        const remaining = threshold - subtotal;
+        const pct = Math.min(100, Math.max(10, (subtotal / threshold) * 100));
+        status.innerHTML = `Add <strong>₹${remaining}</strong> more to unlock <strong>FREE Shipping!</strong>`;
+        fill.style.width = pct + '%';
+      }
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function openCartDrawer() {
+      document.getElementById('cartOverlay').classList.add('open');
+      document.getElementById('cartDrawer').classList.add('open');
+    }
+
+    function closeCartDrawer() {
+      document.getElementById('cartOverlay').classList.remove('open');
+      document.getElementById('cartDrawer').classList.remove('open');
+    }
+
+    // Checkout Modal
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        alert("Your bag is empty! Please add a piece to checkout.");
+        return;
+      }
+      closeCartDrawer();
+      document.getElementById('checkoutModal').classList.add('open');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.remove('open');
+    }
+
+    function simulateCashfreePayment(e) {
+      e.preventDefault();
+      const btn = document.getElementById('payBtn');
+      btn.textContent = 'Connecting Cashfree UPI SDK...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        alert("Payment Captured via Cashfree Sandbox! Order #5320 placed successfully.\nConfirmation SMS & WhatsApp updates dispatched!");
+        cart = [];
+        updateCartUI();
+        closeCheckoutModal();
+        btn.textContent = 'Pay with UPI / Cashfree';
+        btn.disabled = false;
+      }, 1500);
+    }
+
+    // Order Tracker
+    function openTrackerModal() {
+      document.getElementById('trackerModal').classList.add('open');
+    }
+
+    function closeTrackerModal() {
+      document.getElementById('trackerModal').classList.remove('open');
+    }
+
+    function simulateTrack() {
+      document.getElementById('trackResult').style.display = 'block';
+    }
+
+    // Load products from Cloudflare D1 API
+    async function loadProducts() {
+      try {
+        const res = await fetch('/api/products');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            products.length = 0;
+            products.push(...data);
+          }
+        }
+      } catch (e) {
+        console.log('Serving offline catalog');
+      }
+      renderProducts();
+    }
+
+    // Initialize Page
+    loadProducts();
+  </script>
+</body>
+</html>
