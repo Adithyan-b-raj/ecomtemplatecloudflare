@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="whitelabel.js"></script>
   <style>
     /* ==========================================================================
        Design Tokens Extracted Directly from https://kakabyeliza.com
@@ -16,6 +17,9 @@
       --font-accent: 'GFS Didot', 'Times New Roman', serif;
 
       --color-primary: #f76b6a;        /* Exact Kaka by Eliza Primary Coral Accent */
+      --brand-primary: var(--color-primary);
+      --brand-dark: var(--color-dark);
+      --bg-canvas: var(--bg-sand);
       --color-dark: #161616;           /* Exact Kaka by Eliza Button & Heading Black */
       --color-dark-hover: #141414;
       --color-body: #333333;
@@ -1245,13 +1249,13 @@
       <div id="trackResult" style="border-top: 1px solid var(--border-color); padding-top: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
           <strong>Order #5319 (Amber Leaf Dress)</strong>
-          <span style="font-size: 11px; font-weight: 700; color: #f76b6a; background: #FEF3EE; padding: 3px 8px; border-radius: 2px;">Dispatched</span>
+          <span style="font-size: 11px; font-weight: 700; color: var(--color-primary); background: #FEF3EE; padding: 3px 8px; border-radius: 2px;">Dispatched</span>
         </div>
 
         <div style="display: flex; justify-content: space-between; text-align: center; margin: 20px 0;">
           <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #2E7D32; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">✓</div><span style="font-size: 11px;">Placed</span></div>
           <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #2E7D32; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">✓</div><span style="font-size: 11px;">Packed</span></div>
-          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #f76b6a; color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</div><span style="font-size: 11px; font-weight: 600;">In Transit</span></div>
+          <div><div style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-primary); color: #FFF; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">3</div><span style="font-size: 11px; font-weight: 600;">In Transit</span></div>
           <div><div style="width: 24px; height: 24px; border-radius: 50%; background: #DDD; color: #888; margin: 0 auto 4px; font-size: 11px; display: flex; align-items: center; justify-content: center;">4</div><span style="font-size: 11px;">Delivered</span></div>
         </div>
 
@@ -1552,7 +1556,7 @@
         urgencyText.innerHTML = `Only <b>${stock}</b> left in stock!`;
         const pct = Math.min(100, Math.max(20, stock * 20));
         urgencyFill.style.width = pct + '%';
-        urgencyFill.style.background = '#f76b6a';
+        urgencyFill.style.background = 'var(--color-primary)';
       } else {
         urgencyText.innerHTML = '✅ <b>In Stock</b> & Ready for Dispatch';
         urgencyFill.style.width = '100%';
@@ -1717,15 +1721,17 @@
                 ? `+${raw.slice(0, 2)} ${raw.slice(2, 7)} ${raw.slice(7)}` 
                 : raw;
               drawerWa.textContent = `WhatsApp: ${formatted}`;
+              if (window.applyWhiteLabel) window.applyWhiteLabel();
             }
           }
           if (settings.announcement_text) {
             const topBar = document.querySelector('.top-bar');
             if (topBar) topBar.textContent = settings.announcement_text;
+            if (window.applyWhiteLabel) window.applyWhiteLabel();
           }
         }
       } catch (e) {
-        console.log('Using default store settings');
+        console.log('Using default store settings'); if (window.applyWhiteLabel) window.applyWhiteLabel();
       }
     }
 
